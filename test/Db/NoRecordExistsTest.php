@@ -13,5 +13,17 @@ use Zend\Validator\Db\NoRecordExists;
 
 class NoRecordExistsTest extends \PHPUnit_Framework_TestCase
 {
-    public function testTest() { }
+    /**
+     * @expectedException Zend\Validator\Exception\RuntimeException
+     * @expectedExceptionMessage No database adapter present
+     */
+    public function testTest()
+    {
+        $noRecordExists = new NoRecordExists([
+            'table' => 'sut',
+            'field' => 'sut'
+        ]);
+
+        $noRecordExists->isValid(null);
+    }
 }

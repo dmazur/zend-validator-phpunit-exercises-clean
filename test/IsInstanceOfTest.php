@@ -12,5 +12,36 @@ use Zend\Validator\IsInstanceOf;
 
 class IsInstanceOfTest extends \PHPUnit_Framework_TestCase
 {
-    public function testTest() { }
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject|IsInstanceOf
+     */
+    private $instanceOfMock;
+
+    public function setUp()
+    {
+        $this->instanceOfMock = $this->getMockBuilder(IsInstanceOf::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+    }
+
+    public function testTest()
+    {
+        $instanceOf = new IsInstanceOf();
+        $instanceOf->setClassName('Zend\Validator\IsInstanceOf');
+        $this->assertTrue($instanceOf->isValid($instanceOf));
+    }
+
+    public function testMockedObjectValidation()
+    {
+        $instanceOf = new IsInstanceOf();
+        $instanceOf->setClassName('Zend\Validator\IsInstanceOf');
+        $this->assertTrue(
+            $instanceOf->isValid($this->instanceOfMock)
+        );
+
+        $instanceOf->setClassName('PHPUnit_Framework_MockObject_MockObject');
+        $this->assertTrue(
+            $instanceOf->isValid($this->instanceOfMock)
+        );
+    }
 }
